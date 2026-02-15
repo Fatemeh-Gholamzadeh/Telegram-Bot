@@ -2,15 +2,17 @@ import telebot
 from telebot import types
 from googletrans import Translator
 
+#Initialize bot
 bot = telebot.TeleBot("7102945008:AAFXqUcNjnLjKB4UV8IDNkz5g4TZU4UgK5M")
 
 translator = Translator()
-
+#Create inline buttons
 first_button = types.InlineKeyboardButton("channel", url="https://t.me/englishier")
 second_button = types.InlineKeyboardButton("support", url="https://t.me/+UyUlyvDuoiUyYzU0")
 markup = types.InlineKeyboardMarkup(row_width=1)
 markup.add(first_button, second_button)
 
+#Handle/ start command
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     print(f"Received start command from {message.chat.id}")
@@ -19,11 +21,13 @@ def send_welcome(message):
 key_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 key_markup.add("English", "Persian")
 
+#Handle/ help command
 @bot.message_handler(commands=['help'])
 def help_me(message):
     print(f"Received help command from {message.chat.id}")
     bot.reply_to(message, '''This is a smart translate that you can enter your text to translate it and make it available to you. By pressing the English key, it will convert the text from English to Farsi. And if Persian is pressed, it will translate the text from Persian to English‏''')
 
+#Handle all user massages
 @bot.message_handler(func=lambda message: True)
 def translate_message(message):
     print(message)
@@ -39,6 +43,7 @@ def translate_message(message):
         print(f"Received message from {message.chat.id}: {message.text}")
         bot.send_message(message.chat.id, "Please select a language first.", reply_markup=key_markup)
 
+#Translation functions
 def translate_to_persian(message):
     translated = translator.translate(message.text, dest='fa')
     bot.send_message(message.chat.id, translated.text)
@@ -47,5 +52,6 @@ def translate_to_english(message):
     translated = translator.translate(message.text, dest='en')
     bot.send_message(message.chat.id, translated.text)
 
+#Start polling
 print("Starting ...")
 bot.polling(timeout=1000)
