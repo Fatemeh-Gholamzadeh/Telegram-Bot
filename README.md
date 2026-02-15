@@ -17,7 +17,7 @@ The bot translates messages between English and Persian using Google Translate A
 
 ---
 
-## 🛠 Technologies Used
+## Technologies Used
 
 - Python 3
 - pyTelegramBotAPI (telebot)
